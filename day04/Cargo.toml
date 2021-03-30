@@ -1,0 +1,12 @@
+[package]
+name = "day04"
+version = "0.1.0"
+authors = ["tarpaha <ppopchikovsky@gmail.com>"]
+edition = "2018"
+
+[lib]
+doctest = false
+
+[dependencies]
+md-5 = "0.9.1"
+utils = { path = "../utils" }
