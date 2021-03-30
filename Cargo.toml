@@ -1,0 +1,9 @@
+[workspace]
+members = [
+    "all",
+    "utils",
+    "day01",
+    "day02",
+    "day03"
+]
+default-members = ["all"]
