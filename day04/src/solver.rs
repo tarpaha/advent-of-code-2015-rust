@@ -1,14 +1,68 @@
 ﻿use md5::{Md5, Digest};
+use std::sync::{Arc, Mutex};
+use std::sync::atomic::{AtomicUsize, Ordering};
+use std::thread;
 
-pub fn part1(key: &str) -> u32 {
+pub fn part1(key: &'static str) -> u32 {
     find(key, five_leading_zeroes)
 }
 
-pub fn part2(key: &str) -> u32 {
+pub fn part2(key: &'static str) -> u32 {
     find(key, six_leading_zeroes)
 }
 
-fn find(key: &str, acceptable: fn(&[u8]) -> bool) -> u32 {
+fn find(key: &'static str, acceptable: fn(&[u8]) -> bool) -> u32 {
+    let chunk_size = 50000;
+
+    let semaphore = Arc::new(Mutex::new(num_cpus::get()));
+    let result = Arc::new(AtomicUsize::new(0));
+
+    for id in 0.. {
+        // wait for free threads (also break when have result)
+        while result.load(Ordering::SeqCst) == 0 {
+            let mut count = semaphore.lock().unwrap();
+            if *count > 0
+            {
+                // "acquire" semaphore
+                *count -= 1;
+                drop(count);
+                break;
+            }
+            drop(count);
+        }
+
+        // do not start new thread if already have result
+        if result.load(Ordering::SeqCst) != 0 {
+            break;
+        }
+
+        // new calculation thread
+        let free_threads = Arc::clone(&semaphore);
+        let result = Arc::clone(&result);
+        thread::spawn(move || {
+            let start = id * chunk_size;
+            let mut hasher = Md5::new();
+            for n in start .. start + chunk_size {
+                hasher.update(key.as_bytes());
+                hasher.update(n.to_string().as_bytes());
+                let md5 = hasher.finalize_reset();
+                if acceptable(&md5) {
+                    result.store(n, Ordering::SeqCst);
+                    break;
+                }
+            }
+            let mut count = free_threads.lock().unwrap();
+            // "release" semaphore
+            *count += 1;
+            drop(count);
+        });
+    }
+
+    result.load(Ordering::SeqCst) as u32
+}
+
+// first straight realization
+fn _find_straight(key: &str, acceptable: fn(&[u8]) -> bool) -> u32 {
     let mut hasher = Md5::new();
     let mut n = 1;
     loop {
