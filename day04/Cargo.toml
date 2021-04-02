@@ -8,7 +8,6 @@ edition = "2018"
 doctest = false
 
 [dependencies]
-semaphore = "0.4.0"
 num_cpus = "1.13.0"
 md-5 = "0.9.1"
 utils = { path = "../utils" }
