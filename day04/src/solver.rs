@@ -37,7 +37,7 @@ fn find(key: &'static str, acceptable: fn(&[u8]) -> bool) -> u32 {
         }
 
         // new calculation thread
-        let free_threads = Arc::clone(&semaphore);
+        let semaphore = Arc::clone(&semaphore);
         let result = Arc::clone(&result);
         thread::spawn(move || {
             let start = id * chunk_size;
@@ -51,7 +51,7 @@ fn find(key: &'static str, acceptable: fn(&[u8]) -> bool) -> u32 {
                     break;
                 }
             }
-            let mut count = free_threads.lock().unwrap();
+            let mut count = semaphore.lock().unwrap();
             // "release" semaphore
             *count += 1;
             drop(count);
