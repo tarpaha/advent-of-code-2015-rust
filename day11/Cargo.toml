@@ -1,0 +1,11 @@
+[package]
+name = "day11"
+version = "0.1.0"
+authors = ["tarpaha <ppopchikovsky@gmail.com>"]
+edition = "2018"
+
+[lib]
+doctest = false
+
+[dependencies]
+utils = { path = "../utils" }
