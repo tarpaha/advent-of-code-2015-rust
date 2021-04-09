@@ -16,6 +16,7 @@ dependencies = [
  "day10",
  "day11",
  "day12",
+ "day13",
  "utils",
 ]
 
@@ -114,6 +115,14 @@ name = "day12"
 version = "0.1.0"
 dependencies = [
  "serde_json",
+ "utils",
+]
+
+[[package]]
+name = "day13"
+version = "0.1.0"
+dependencies = [
+ "itertools",
  "utils",
 ]
 
