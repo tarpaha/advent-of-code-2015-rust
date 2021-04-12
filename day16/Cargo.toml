@@ -1,0 +1,11 @@
+[package]
+name = "day16"
+version = "0.1.0"
+authors = ["GitHub <noreply@github.com>"]
+edition = "2018"
+
+[lib]
+doctest = false
+
+[dependencies]
+utils = { path = "../utils" }
