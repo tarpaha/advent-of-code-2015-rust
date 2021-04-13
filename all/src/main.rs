@@ -16,6 +16,7 @@ use day14::Day14;
 use day15::Day15;
 use day16::Day16;
 use day17::Day17;
+use day18::Day18;
 
 fn main() {
     let solutions: Vec<Box<dyn Solution>> = vec![
@@ -35,7 +36,8 @@ fn main() {
         Box::new(Day14),
         Box::new(Day15),
         Box::new(Day16),
-        Box::new(Day17)
+        Box::new(Day17),
+        Box::new(Day18)
     ];
     for (day, solution) in solutions.iter().enumerate() {
         println!("{}", format!("Day{:02}:", day + 1));
