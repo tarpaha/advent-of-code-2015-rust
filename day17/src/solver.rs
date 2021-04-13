@@ -17,7 +17,6 @@ pub fn part1(total: u32, values: &Vec<u32>) -> u32 {
 }
 
 pub fn part2(total: u32, values: &Vec<u32>) -> u32 {
-    let mut count = 0;
     let mut answers = HashMap::new();
     for bitmask in 0..2u32.pow(values.len() as u32) {
         let mut sum = 0;
@@ -29,7 +28,6 @@ pub fn part2(total: u32, values: &Vec<u32>) -> u32 {
             }
         }
         if sum == total {
-            count += 1;
             let answer = answers.entry(length).or_insert(0);
             *answer += 1;
         }
